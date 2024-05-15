@@ -1,4 +1,4 @@
-# Mobb GitHub action
+# Mobb GitHub action for Checkmarx One GitHub Integration
 
 This action is used alongside with Checkmarx One's GitHub Integration (https://checkmarx.com/resource/documents/en/34965-68678-github-cloud.html) capability where Checkmarx publishes a scan report in the Pull Request's comment area. This action can be used to monitor the presence of the checkmarx comment and trigger a job to download the SAST report. The SAST report is submitted to Mobb  vulnerability analysis engine and links the URL of the fix report to the PR. If you are using this on a private repo then the Mobb user the API key belongs to must have access to the repo and must approve github access for the user on the Mobb platform beforehand.
 
