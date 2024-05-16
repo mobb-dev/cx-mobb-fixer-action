@@ -36,7 +36,21 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 ## Example usage
 
+Create a file under the path `.github/workflow/mobb.yml`. 
+
+A sample content of the workflow file: 
 ```
+# Mobb/Checkamrx Fixer on pull requests
+# This workflow defines the needed steps to run Checkmarx on every pull request and pass the results to Mobb Fixer.
+#
+# Secrets in use (add your missing ones):
+# CX_TENANT - your Checkmarx tenant name (found in your Checkmarx settings)
+# CX_API_TOKEN - your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
+# CX_BASE_URI - your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
+# CX_BASE_AUTH_URI - your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
+# MOBB_API_TOKEN - your mobb user credentials (autumatially set if you used the Mobb app to configure the integration)
+# GITHUB_TOKEN - automatically set by GitHub
+
 name: "Mobb/Checkmarx"
 
 on:
