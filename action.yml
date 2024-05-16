@@ -35,11 +35,11 @@ runs:
 
     # This step extracts the Head SHA and stores it in the 'head-sha' variable                
     - id: env 
-        name: Set Up Environment
-        run: |
-          OUT=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
-          echo $OUT
-          echo "head-sha=$OUT" >> $GITHUB_OUTPUT
+      name: Set Up Environment
+      run: |
+        OUT=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
+        echo $OUT
+        echo "head-sha=$OUT" >> $GITHUB_OUTPUT
 
     # Displays status in the PR that this action is in 'pending' status
     - uses: Sibz/github-status-action@v1
