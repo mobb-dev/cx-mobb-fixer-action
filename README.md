@@ -73,7 +73,7 @@ jobs:
 
       - name: Run Mobb GH Fixer monitor for CxOne Comments
         if: always()
-        uses: mobb-dev/cx-mobb-fixer-action@main
+        uses: mobb-dev/cx-mobb-fixer-action@v1
         with:
           cx-tenant: ${{secrets.CX_TENANT }}
           cx-api-token: ${{ secrets.CX_API_TOKEN  }}
