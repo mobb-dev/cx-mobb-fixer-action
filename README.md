@@ -1,6 +1,11 @@
 # Mobb GitHub action for Checkmarx One GitHub Integration
 
-This action is used alongside with Checkmarx One's GitHub Integration (https://checkmarx.com/resource/documents/en/34965-68678-github-cloud.html) capability where Checkmarx publishes a scan report in the Pull Request's comment area. This action can be used to monitor the presence of the checkmarx comment and trigger a job to download the SAST report. The SAST report is submitted to Mobb  vulnerability analysis engine and links the URL of the fix report to the PR. If you are using this on a private repo then the Mobb user the API key belongs to must have access to the repo and must approve github access for the user on the Mobb platform beforehand.
+This action is used alongside the Checkmarx One's GitHub Integration (https://checkmarx.com/resource/documents/en/34965-68678-github-cloud.html) where Checkmarx publishes a scan report in the Pull Request's comment section. This action will monitor the presence of such comment and trigger a job to download the SAST report. The SAST report is submitted to Mobb vulnerability analysis engine and links the URL of the fix report to the PR. If you are using this on a private repo then the Mobb user the API key belongs to must have access to the repo and must approve github access for the user on the Mobb platform beforehand.
+
+![image](https://github.com/mobb-dev/cx-mobb-fixer-action/assets/5158535/407a007e-b140-4643-a3e3-b4c0b2050bbb)
+
+
+# Pre-Requisites
 
 ## Inputs
 
@@ -37,43 +42,34 @@ The Mobb fix report URL.
 ## Example usage
 
 ```
-# This example utilizes Mobb with Checkmarx via GitHub Actions
+name: "Mobb/Checkmarx"
 
-on: [pull_request]
+on:
+  issue_comment:
+    types: [created]
 
 jobs:
-  Checkmarx-Mobb-example:
-    runs-on: ubuntu-latest
-    name: Fix Checkmarx findings with Mobb
+  report-and-fix:
+    name: Get Report and Fix
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body,'Checkmarx One – Scan Summary & Details') }} # This makes sure that the comment originates from a PR and not an issue comment
+    runs-on: 'ubuntu-latest'
+    timeout-minutes: 360
+    permissions:
+      pull-requests: write
+      statuses: write
 
     steps:
-      - name: Checkout repo to get code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node on this machine
-        uses: actions/setup-node@v3.6.0
-        with:
-          node-version: 18
-
-      - name: Download and configure Checkmarx CLI
-        run: |
-          wget https://github.com/Checkmarx/ast-cli/releases/download/2.0.54/ast-cli_2.0.54_linux_x64.tar.gz -O checkmarx.tar.gz
-          tar -xf checkmarx.tar.gz
-          ./cx configure set --prop-name cx_apikey --prop-value ${{ secrets.CX_API_KEY }}
-          ./cx configure set --prop-name cx_base_auth_uri --prop-value ${{ secrets.CX_BASE_AUTH_URI }}
-          ./cx configure set --prop-name cx_base_uri --prop-value ${{ secrets.CX_BASE_URI }}
-          ./cx configure set --prop-name cx_tenant --prop-value ${{ secrets.CX_TENANT }}
-        shell: bash -l {0}
-
-      - name: Run Checkmarx SAST scan
-        run: ./cx scan create --project-name my-test-project -s ./ --report-format json --scan-types sast --branch nobranch  --threshold "sast-high=1"
-        shell: bash -l {0}
-
-      - name: Run Mobb on the findings and get fixes
+      - name: Run Mobb GH Fixer monitor for CxOne Comments
         if: always()
-        uses: mobb-dev/action@v1
+        uses: mobb-dev/cx-mobb-fixer-action@main
         with:
-          report-file: "cx_result.json"
+          cx-tenant: ${{secrets.CX_TENANT }}
+          cx-api-token: ${{ secrets.CX_API_TOKEN  }}
+          cx-base-uri: ${{ secrets.CX_BASE_URI }}
+          cx-base-auth-uri: ${{ secrets.CX_BASE_AUTH_URI }}
           api-key: ${{ secrets.MOBB_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
