@@ -82,6 +82,7 @@ runs:
         fi
         OUT=$(echo $OUT | tr '\n' ' ')
         echo "fix-report-url=$OUT" >> $GITHUB_OUTPUT
+        echo "Mobb URL: $OUT"
       shell: bash -l {0}
 
     # Displays status in the PR that this action is in 'complete' status
