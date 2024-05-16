@@ -2,10 +2,7 @@
 
 This action is used alongside the Checkmarx One's GitHub Integration (https://checkmarx.com/resource/documents/en/34965-68678-github-cloud.html) where Checkmarx publishes a scan report in the Pull Request's comment section. This action will monitor the presence of such comment and trigger a job to download the SAST report. The SAST report is submitted to Mobb vulnerability analysis engine and links the URL of the fix report to the PR. If you are using this on a private repo then the Mobb user the API key belongs to must have access to the repo and must approve github access for the user on the Mobb platform beforehand.
 
-![image](https://github.com/mobb-dev/cx-mobb-fixer-action/assets/5158535/407a007e-b140-4643-a3e3-b4c0b2050bbb)
-
-
-# Pre-Requisites
+![image](https://github.com/mobb-dev/cx-mobb-fixer-action/assets/5158535/da9221ef-1dd2-4b6d-b6ba-aa466b51e887)
 
 ## Inputs
 
@@ -33,15 +30,16 @@ This action is used alongside the Checkmarx One's GitHub Integration (https://ch
 
 **Required** The GitHub api token to use with the action. Usually available as `${{ secrets.GITHUB_TOKEN }}`.
 
-## Outputs
-
-## `fix-report-url`
-
-The Mobb fix report URL.
-
 ## Example usage
 
 ```
+# CX_TENANT - your Checkmarx tenant name (found in your Checkmarx settings)
+# CX_API_TOKEN - your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
+# CX_BASE_URI - your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
+# CX_BASE_AUTH_URI - your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
+# MOBB_API_TOKEN - your mobb user credentials (autumatially set if you used the Mobb app to configure the integration)
+# GITHUB_TOKEN - automatically set by GitHub
+
 name: "Mobb/Checkmarx"
 
 on:
