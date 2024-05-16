@@ -11,10 +11,10 @@ inputs:
     description: "your Checkmarx credentials"
     required: true
   cx-base-uri:
-    description: "your Checkmarx app url, e.g. "https://ast.checkmarx.net/""
+    description: "your Checkmarx app url, e.g. \"https://ast.checkmarx.net/\""
     required: true
   cx-base-auth-uri:
-    description: "your Checkmarx auth url, e.g. "https://iam.checkmarx.net/""
+    description: "your Checkmarx auth url, e.g. \"https://iam.checkmarx.net/\""
     required: true
   api-key:
     description: "Mobb API key"
