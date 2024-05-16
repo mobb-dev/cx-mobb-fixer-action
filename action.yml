@@ -46,7 +46,7 @@ runs:
     # Displays status in the PR that this action is in 'pending' status
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
-        authToken: ${{ inputs.GITHUB_TOKEN }}
+        authToken: ${{ inputs.github-token }}
         context: "Mobb fix analysis"
         state: "pending"
         sha: ${{steps.env.outputs.head-sha}}
@@ -57,10 +57,10 @@ runs:
         SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p')
         wget https://github.com/Checkmarx/ast-cli/releases/download/2.0.54/ast-cli_2.0.54_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
-        ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.CX_API_TOKEN }}
-        ./cx configure set --prop-name cx_base_auth_uri --prop-value ${{ inputs.CX_BASE_AUTH_URI }}
-        ./cx configure set --prop-name cx_base_uri --prop-value ${{ inputs.CX_BASE_URI }}
-        ./cx configure set --prop-name cx_tenant --prop-value ${{ inputs.CX_TENANT }}
+        ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
+        ./cx configure set --prop-name cx-base-auth-uri --prop-value ${{ inputs.cx-base-auth-uri }}
+        ./cx configure set --prop-name cx-base-uri --prop-value ${{ inputs.cx-base-uri }}
+        ./cx configure set --prop-name cx-tenant --prop-value ${{ inputs.cx-tenant }}
         ./cx results show --output-name report --report-format json --scan-id $SCAN_ID
       env:
         COMMENT: ${{ github.event.comment.body }}
@@ -71,11 +71,11 @@ runs:
       run: |
         REPO=$(git remote get-url origin)
         REPO=${REPO%".git"}
-        GITHUB_TOKEN=${{ inputs.GITHUB_TOKEN }}
+        github-token=${{ inputs.github-token }}
         SCANNER=checkmarx
         PR_NUMBER=${{ github.event.issue.number }}
         GITHUB_HEAD_REF=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
-        OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.MOBB_API_TOKEN }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.GITHUB_TOKEN }} --scanner $SCANNER)
+        OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.api-key }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER)
         RETVAL=$?
         if [ $RETVAL -ne 0 ]; then
           exit $RETVAL
@@ -87,7 +87,7 @@ runs:
     # Displays status in the PR that this action is in 'complete' status
     - uses: Sibz/github-status-action@v1
       with:
-        authToken: ${{ inputs.GITHUB_TOKEN }}
+        authToken: ${{ inputs.github-token }}
         context: "Mobb fix analysis"
         state: "success"
         sha: ${{steps.env.outputs.head-sha}}
@@ -95,7 +95,7 @@ runs:
     # Publish the Mobb fix report link in the PR
     - uses: Sibz/github-status-action@v1
       with:
-        authToken: ${{ inputs.GITHUB_TOKEN }}
+        authToken: ${{ inputs.github-token }}
         context: "Mobb fix report link"
         state: "success"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
