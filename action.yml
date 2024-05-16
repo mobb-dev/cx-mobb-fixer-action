@@ -40,6 +40,8 @@ runs:
         OUT=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
         echo $OUT
         echo "head-sha=$OUT" >> $GITHUB_OUTPUT
+      shell: bash -l {0}
+
 
     # Displays status in the PR that this action is in 'pending' status
     - uses: Sibz/github-status-action@v1
@@ -62,6 +64,7 @@ runs:
         ./cx results show --output-name report --report-format json --scan-id $SCAN_ID
       env:
         COMMENT: ${{ github.event.comment.body }}
+      shell: bash -l {0}
 
     - id: run-npx-mobb-dev
       name: Mobb - Generate Autofix
@@ -79,6 +82,7 @@ runs:
         fi
         OUT=$(echo $OUT | tr '\n' ' ')
         echo "fix-report-url=$OUT" >> $GITHUB_OUTPUT
+      shell: bash -l {0}
 
     # Displays status in the PR that this action is in 'complete' status
     - uses: Sibz/github-status-action@v1
