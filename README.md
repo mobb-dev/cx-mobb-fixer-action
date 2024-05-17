@@ -44,12 +44,12 @@ A sample content of the workflow file:
 # This workflow defines the needed steps to run Checkmarx on every pull request and pass the results to Mobb Fixer.
 #
 # Secrets in use (add your missing ones):
-# CX_TENANT - your Checkmarx tenant name (found in your Checkmarx settings)
-# CX_API_TOKEN - your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
-# CX_BASE_URI - your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
-# CX_BASE_AUTH_URI - your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
-# MOBB_API_TOKEN - your mobb user credentials (autumatially set if you used the Mobb app to configure the integration)
-# GITHUB_TOKEN - automatically set by GitHub
+# CX_TENANT - Your Checkmarx tenant name (found in your Checkmarx settings)
+# CX_API_TOKEN - Your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
+# CX_BASE_URI - Your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
+# CX_BASE_AUTH_URI - Your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
+# MOBB_API_TOKEN - Tour mobb API Token
+# GITHUB_TOKEN - Automatically set by GitHub
 
 name: "Mobb/Checkmarx"
 
