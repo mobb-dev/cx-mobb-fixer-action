@@ -1,4 +1,4 @@
-# Mobb GitHub action for Checkmarx One GitHub Integration
+# Mobb GitHub Fixer for Checkmarx One GitHub Integration
 
 This action is used alongside the Checkmarx One's GitHub Integration (https://checkmarx.com/resource/documents/en/34965-68678-github-cloud.html) where Checkmarx publishes a scan report in the Pull Request's comment section. 
 
