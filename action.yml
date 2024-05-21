@@ -58,9 +58,6 @@ runs:
         wget https://github.com/Checkmarx/ast-cli/releases/download/2.0.54/ast-cli_2.0.54_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
         ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
-        ./cx configure set --prop-name cx-base-auth-uri --prop-value ${{ inputs.cx-base-auth-uri }}
-        ./cx configure set --prop-name cx-base-uri --prop-value ${{ inputs.cx-base-uri }}
-        ./cx configure set --prop-name cx-tenant --prop-value ${{ inputs.cx-tenant }}
         ./cx results show --output-name report --report-format json --scan-id $SCAN_ID
       env:
         COMMENT: ${{ github.event.comment.body }}
