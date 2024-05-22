@@ -32,6 +32,7 @@ runs:
         OUT=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
         echo $OUT
         echo "head-sha=$OUT" >> $GITHUB_OUTPUT
+        echo $GITHUB_SERVER_URL + "/" $GITHUB_REPOSITORY + "/actions/runs/" $GITHUB_RUN_ID
       shell: bash -l {0}
 
 
@@ -73,14 +74,6 @@ runs:
         echo "Mobb URL: $OUT"
       shell: bash -l {0}
 
-    # Displays status in the PR that this action is in 'complete' status
-    - uses: guibranco/github-status-action-v2@v1.1.13
-      with:
-        authToken: ${{ inputs.github-token }}
-        context: "Mobb fix analysis"
-        state: "success"
-        sha: ${{steps.env.outputs.head-sha}}
-        
     # Publish the Mobb fix report link in the PR
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
@@ -89,3 +82,13 @@ runs:
         state: "success"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
         sha: ${{steps.env.outputs.head-sha}}
+
+    # Displays status in the PR that this action is in 'complete' status
+    - uses: guibranco/github-status-action-v2@v1.1.13
+      with:
+        authToken: ${{ inputs.github-token }}
+        context: "Mobb fix analysis"
+        state: "success"
+        sha: ${{steps.env.outputs.head-sha}}
+        
+
