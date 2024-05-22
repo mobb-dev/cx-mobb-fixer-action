@@ -10,21 +10,9 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 ## Inputs
 
-## `cx-tenant`
-
-**Required** The full path of the SAST report file.
-
 ## `cx-api-token`
 
 **Required** your Checkmarx API token
-
-## `cx-base-uri`
-
-**Required** your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
-
-## `cx-base-auth-uri`
-
-**Required** your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
 
 ## `api-key`
 
@@ -44,10 +32,7 @@ A sample content of the workflow file:
 # This workflow defines the needed steps to run Checkmarx on every pull request and pass the results to Mobb Fixer.
 #
 # Secrets in use (add your missing ones):
-# CX_TENANT - Your Checkmarx tenant name (found in your Checkmarx settings)
 # CX_API_TOKEN - Your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
-# CX_BASE_URI - Your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
-# CX_BASE_AUTH_URI - Your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
 # MOBB_API_TOKEN - Tour mobb API Token
 # GITHUB_TOKEN - Automatically set by GitHub
 
@@ -73,12 +58,9 @@ jobs:
 
       - name: Run Mobb GH Fixer monitor for CxOne Comments
         if: always()
-        uses: mobb-dev/cx-mobb-fixer-action@v1
+        uses: mobb-dev/cx-mobb-fixer-action@v2
         with:
-          cx-tenant: ${{secrets.CX_TENANT }}
           cx-api-token: ${{ secrets.CX_API_TOKEN  }}
-          cx-base-uri: ${{ secrets.CX_BASE_URI }}
-          cx-base-auth-uri: ${{ secrets.CX_BASE_AUTH_URI }}
           api-key: ${{ secrets.MOBB_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
