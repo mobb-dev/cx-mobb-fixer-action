@@ -42,6 +42,7 @@ runs:
         authToken: ${{ inputs.github-token }}
         context: "Mobb fix analysis"
         state: "pending"
+        target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
 
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
@@ -85,10 +86,24 @@ runs:
 
     # Displays status in the PR that this action is in 'complete' status
     - uses: guibranco/github-status-action-v2@v1.1.13
+      if: success()
       with:
         authToken: ${{ inputs.github-token }}
         context: "Mobb fix analysis"
         state: "success"
+        target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
+        sha: ${{steps.env.outputs.head-sha}}
+
+    # Displays status in the PR that this action is in 'failure' status
+    - uses: guibranco/github-status-action-v2@v1.1.13
+      if: failure()
+      with:
+        authToken: ${{ inputs.github-token }}
+        context: "Mobb fix analysis"
+        state: "failure"
+        target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
         
+
+
 
