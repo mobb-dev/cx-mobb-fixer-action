@@ -4,7 +4,7 @@ This action is used alongside the Checkmarx One's GitHub Integration (https://ch
 
 This action will monitor the presence of such a comment and trigger a job to download the SAST report. The SAST report is submitted to the Mobb vulnerability analysis engine, and a fix is presented to the Pull Request's comment section. 
 
-If you are using this on a private repo, the Mobb user to which the API key belongs must have access to the repo and must approve github access for the user on the Mobb platform beforehand.
+If you are using this on a private repo, the Mobb user to which the API key belongs must have access to the repo and must approve GitHub access for the user on the Mobb platform beforehand.
 
 ![image](https://github.com/mobb-dev/cx-mobb-fixer-action/assets/5158535/da9221ef-1dd2-4b6d-b6ba-aa466b51e887)
 
