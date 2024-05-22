@@ -46,7 +46,7 @@ runs:
         state: "pending"
         target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
-        description: "Mobb Fix Analysis In Progress..." 
+        description: "Mobb fix analysis in progress..." 
 
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get Checkmarx Report
@@ -90,7 +90,7 @@ runs:
         state: "success"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
         sha: ${{steps.env.outputs.head-sha}}
-        description: "Click Here for the Full Fix Analysis Report" 
+        description: "Click \"Details\" to access the full fix analysis report" 
 
 
     # Displays status in the PR that this action is in 'complete' status
@@ -102,7 +102,7 @@ runs:
         state: "success"
         target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
-        description: "Mobb Fix Analysis Completed. See Comment in the PR for Results" 
+        description: "Mobb fix analysis completed. See comment in the PR for results" 
 
 
     # Displays status in the PR that this action is in 'failure' status
@@ -114,7 +114,7 @@ runs:
         state: "failure"
         target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
-        description: "Mobb Fix Analysis Failed. Click \"Details\" to see console logs" 
+        description: "Mobb fix analysis failed. Click \"Details\" to see console logs" 
 
 
 
