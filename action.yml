@@ -43,7 +43,7 @@ runs:
         authToken: ${{ inputs.github-token }}
         context: "Mobb Fix Analysis"
         state: "pending"
-        target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
+        target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
         description: "Mobb Fix Analysis In Progress..." 
 
@@ -99,7 +99,7 @@ runs:
         authToken: ${{ inputs.github-token }}
         context: "Mobb Fix Analysis"
         state: "success"
-        target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
+        target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
         description: "Mobb Fix Analysis Completed. See Comment in the PR for Results" 
 
@@ -111,7 +111,7 @@ runs:
         authToken: ${{ inputs.github-token }}
         context: "Mobb Fix Analysis"
         state: "failure"
-        target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
+        target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
         description: "Mobb Fix Analysis Failed. CLick Details To See Console Log" 
 
