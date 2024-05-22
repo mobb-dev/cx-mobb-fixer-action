@@ -4,23 +4,14 @@ branding:
   icon: aperture
   color: blue
 inputs:
-  cx-tenant:
-    description: "Your Checkmarx tenant name"
-    required: true
   cx-api-token:
     description: "your Checkmarx credentials"
     required: true
-  cx-base-uri:
-    description: "your Checkmarx app url, e.g. \"https://ast.checkmarx.net/\""
-    required: true
-  cx-base-auth-uri:
-    description: "your Checkmarx auth url, e.g. \"https://iam.checkmarx.net/\""
-    required: true
-  api-key:
-    description: "Mobb API key"
+  mobb-api-token:
+    description: "Mobb API token"
     required: true
   github-token:
-    description: "GitHub Token"
+    description: "GitHub token"
     required: true
 outputs:
   fix-report-url:
