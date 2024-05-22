@@ -12,11 +12,11 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 ## `cx-api-token`
 
-**Required** your Checkmarx API token
+**Required** your Checkmarx API token. [Find out how to get it here](https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html). 
 
 ## `mobb-api-token`
 
-**Required** The Mobb API key to use with the action.
+**Required** The Mobb API token to use with the action. [Find out how to get it here](https://docs.mobb.ai/mobb-user-docs/administration/access-tokens). 
 
 ## `github-token`
 
@@ -33,7 +33,7 @@ A sample content of the workflow file:
 #
 # Secrets in use (add your missing ones):
 # CX_API_TOKEN - Your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
-# MOBB_API_TOKEN - Tour mobb API Token
+# MOBB_API_TOKEN - Tour mobb API Token (find out how to get it here: https://docs.mobb.ai/mobb-user-docs/administration/access-tokens)
 # GITHUB_TOKEN - Automatically set by GitHub
 
 name: "Mobb/Checkmarx"
