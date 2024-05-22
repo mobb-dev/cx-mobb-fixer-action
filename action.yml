@@ -4,23 +4,14 @@ branding:
   icon: aperture
   color: blue
 inputs:
-  cx-tenant:
-    description: "Your Checkmarx tenant name"
-    required: true
   cx-api-token:
     description: "your Checkmarx credentials"
     required: true
-  cx-base-uri:
-    description: "your Checkmarx app url, e.g. \"https://ast.checkmarx.net/\""
-    required: true
-  cx-base-auth-uri:
-    description: "your Checkmarx auth url, e.g. \"https://iam.checkmarx.net/\""
-    required: true
-  api-key:
-    description: "Mobb API key"
+  mobb-api-token:
+    description: "Mobb API token"
     required: true
   github-token:
-    description: "GitHub Token"
+    description: "GitHub token"
     required: true
 outputs:
   fix-report-url:
@@ -37,9 +28,13 @@ runs:
     - id: env 
       name: Set Up Environment
       run: |
+        
         OUT=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
         echo $OUT
         echo "head-sha=$OUT" >> $GITHUB_OUTPUT
+        RUN_PATH=$GITHUB_SERVER_URL"/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID
+        echo RUN_PATH: $RUN_PATH
+        echo "action-run-path=$RUN_PATH" >> $GITHUB_OUTPUT
       shell: bash -l {0}
 
 
@@ -47,20 +42,19 @@ runs:
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
         authToken: ${{ inputs.github-token }}
-        context: "Mobb fix analysis"
+        context: "Mobb Fix Analysis"
         state: "pending"
+        target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
+        description: "Mobb fix analysis in progress..." 
 
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get Checkmarx Report
       run: |
         SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p')
-        wget https://github.com/Checkmarx/ast-cli/releases/download/2.0.54/ast-cli_2.0.54_linux_x64.tar.gz -O checkmarx.tar.gz
+        wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.2/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
         ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
-        ./cx configure set --prop-name cx-base-auth-uri --prop-value ${{ inputs.cx-base-auth-uri }}
-        ./cx configure set --prop-name cx-base-uri --prop-value ${{ inputs.cx-base-uri }}
-        ./cx configure set --prop-name cx-tenant --prop-value ${{ inputs.cx-tenant }}
         ./cx results show --output-name report --report-format json --scan-id $SCAN_ID
       env:
         COMMENT: ${{ github.event.comment.body }}
@@ -71,11 +65,14 @@ runs:
       run: |
         REPO=$(git remote get-url origin)
         REPO=${REPO%".git"}
-        echo $REPO
         SCANNER=checkmarx
         PR_NUMBER=${{ github.event.issue.number }}
         GITHUB_HEAD_REF=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
-        OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.api-key }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER)
+        echo REPO: $REPO
+        echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
+        echo GITHUB_SHA: $GITHUB_SHA
+        echo PR_NUMBER: $PR_NUMBER
+        OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.mobb-api-token }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER)
         RETVAL=$?
         if [ $RETVAL -ne 0 ]; then
           exit $RETVAL
@@ -85,19 +82,40 @@ runs:
         echo "Mobb URL: $OUT"
       shell: bash -l {0}
 
-    # Displays status in the PR that this action is in 'complete' status
-    - uses: guibranco/github-status-action-v2@v1.1.13
-      with:
-        authToken: ${{ inputs.github-token }}
-        context: "Mobb fix analysis"
-        state: "success"
-        sha: ${{steps.env.outputs.head-sha}}
-        
     # Publish the Mobb fix report link in the PR
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
         authToken: ${{ inputs.github-token }}
-        context: "Mobb fix report link"
+        context: "Mobb Fix Report Link"
         state: "success"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
         sha: ${{steps.env.outputs.head-sha}}
+        description: "Click \"Details\" to access the full fix analysis report" 
+
+
+    # Displays status in the PR that this action is in 'complete' status
+    - uses: guibranco/github-status-action-v2@v1.1.13
+      if: success()
+      with:
+        authToken: ${{ inputs.github-token }}
+        context: "Mobb Fix Analysis"
+        state: "success"
+        target_url: ${{ steps.env.outputs.action-run-path }}
+        sha: ${{steps.env.outputs.head-sha}}
+        description: "Mobb fix analysis completed. See comment in the PR for results" 
+
+
+    # Displays status in the PR that this action is in 'failure' status
+    - uses: guibranco/github-status-action-v2@v1.1.13
+      if: failure()
+      with:
+        authToken: ${{ inputs.github-token }}
+        context: "Mobb Fix Analysis"
+        state: "failure"
+        target_url: ${{ steps.env.outputs.action-run-path }}
+        sha: ${{steps.env.outputs.head-sha}}
+        description: "Mobb fix analysis failed. Click \"Details\" to see console logs" 
+
+
+
+

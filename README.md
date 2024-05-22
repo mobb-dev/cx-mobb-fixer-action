@@ -4,31 +4,19 @@ This action is used alongside the Checkmarx One's GitHub Integration (https://ch
 
 This action will monitor the presence of such a comment and trigger a job to download the SAST report. The SAST report is submitted to the Mobb vulnerability analysis engine, and a fix is presented to the Pull Request's comment section. 
 
-If you are using this on a private repo, the Mobb user to which the API key belongs must have access to the repo and must approve github access for the user on the Mobb platform beforehand.
+If you are using this on a private repo, the Mobb user to which the API key belongs must have access to the repo and must approve GitHub access for the user on the Mobb platform beforehand.
 
 ![image](https://github.com/mobb-dev/cx-mobb-fixer-action/assets/5158535/da9221ef-1dd2-4b6d-b6ba-aa466b51e887)
 
 ## Inputs
 
-## `cx-tenant`
-
-**Required** The full path of the SAST report file.
-
 ## `cx-api-token`
 
-**Required** your Checkmarx API token
+**Required** your Checkmarx API token. [Find out how to get it here](https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html). 
 
-## `cx-base-uri`
+## `mobb-api-token`
 
-**Required** your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
-
-## `cx-base-auth-uri`
-
-**Required** your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
-
-## `api-key`
-
-**Required** The Mobb API key to use with the action.
+**Required** The Mobb API token to use with the action. [Find out how to get it here](https://docs.mobb.ai/mobb-user-docs/administration/access-tokens). 
 
 ## `github-token`
 
@@ -44,11 +32,8 @@ A sample content of the workflow file:
 # This workflow defines the needed steps to run Checkmarx on every pull request and pass the results to Mobb Fixer.
 #
 # Secrets in use (add your missing ones):
-# CX_TENANT - Your Checkmarx tenant name (found in your Checkmarx settings)
 # CX_API_TOKEN - Your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
-# CX_BASE_URI - Your Checkmarx app url, e.g. "https://ast.checkmarx.net/"
-# CX_BASE_AUTH_URI - Your Checkmarx auth url, e.g. "https://iam.checkmarx.net/"
-# MOBB_API_TOKEN - Tour mobb API Token
+# MOBB_API_TOKEN - Your mobb API Token (find out how to get it here: https://docs.mobb.ai/mobb-user-docs/administration/access-tokens)
 # GITHUB_TOKEN - Automatically set by GitHub
 
 name: "Mobb/Checkmarx"
@@ -73,12 +58,9 @@ jobs:
 
       - name: Run Mobb GH Fixer monitor for CxOne Comments
         if: always()
-        uses: mobb-dev/cx-mobb-fixer-action@v1
+        uses: mobb-dev/cx-mobb-fixer-action@v1.1
         with:
-          cx-tenant: ${{secrets.CX_TENANT }}
           cx-api-token: ${{ secrets.CX_API_TOKEN  }}
-          cx-base-uri: ${{ secrets.CX_BASE_URI }}
-          cx-base-auth-uri: ${{ secrets.CX_BASE_AUTH_URI }}
-          api-key: ${{ secrets.MOBB_API_TOKEN }}
+          mobb-api-token: ${{ secrets.MOBB_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
