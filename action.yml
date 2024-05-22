@@ -28,12 +28,12 @@ runs:
     - id: env 
       name: Set Up Environment
       run: |
-        env
+        
         OUT=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
         echo $OUT
         echo "head-sha=$OUT" >> $GITHUB_OUTPUT
         RUN_PATH=$GITHUB_SERVER_URL"/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID
-        echo $RUN_PATH
+        echo RUN_PATH: $RUN_PATH
         echo "action-run-path=$RUN_PATH" >> $GITHUB_OUTPUT
       shell: bash -l {0}
 
