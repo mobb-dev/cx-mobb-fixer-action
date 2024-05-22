@@ -114,7 +114,7 @@ runs:
         state: "failure"
         target_url: ${{ steps.env.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
-        description: "Mobb Fix Analysis Failed. CLick Details To See Console Log" 
+        description: "Mobb Fix Analysis Failed. Click \"Details\" to see console logs" 
 
 
 
