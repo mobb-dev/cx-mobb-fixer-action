@@ -33,7 +33,7 @@ A sample content of the workflow file:
 #
 # Secrets in use (add your missing ones):
 # CX_API_TOKEN - Your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
-# MOBB_API_TOKEN - Tour mobb API Token (find out how to get it here: https://docs.mobb.ai/mobb-user-docs/administration/access-tokens)
+# MOBB_API_TOKEN - Your mobb API Token (find out how to get it here: https://docs.mobb.ai/mobb-user-docs/administration/access-tokens)
 # GITHUB_TOKEN - Automatically set by GitHub
 
 name: "Mobb/Checkmarx"
