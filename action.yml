@@ -40,10 +40,11 @@ runs:
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
         authToken: ${{ inputs.github-token }}
-        context: "Mobb fix analysis"
+        context: "Mobb Fix Analysis"
         state: "pending"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
+        description: "Mobb Fix Analysis In Progress..." 
 
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get Checkmarx Report
@@ -83,31 +84,36 @@ runs:
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
         authToken: ${{ inputs.github-token }}
-        context: "Mobb fix report link"
+        context: "Mobb Fix Report Link"
         state: "success"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
         sha: ${{steps.env.outputs.head-sha}}
+        description: "Click Here for the Full Fix Analysis Report" 
+
 
     # Displays status in the PR that this action is in 'complete' status
     - uses: guibranco/github-status-action-v2@v1.1.13
       if: success()
       with:
         authToken: ${{ inputs.github-token }}
-        context: "Mobb fix analysis"
+        context: "Mobb Fix Analysis"
         state: "success"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
+        description: "Mobb Fix Analysis Completed. See Comment in the PR for Results" 
+
 
     # Displays status in the PR that this action is in 'failure' status
     - uses: guibranco/github-status-action-v2@v1.1.13
       if: failure()
       with:
         authToken: ${{ inputs.github-token }}
-        context: "Mobb fix analysis"
+        context: "Mobb Fix Analysis"
         state: "failure"
         target_url: ${{ steps.run-npx-mobb-dev.outputs.action-run-path }}
         sha: ${{steps.env.outputs.head-sha}}
-        
+        description: "Mobb Fix Analysis Failed. CLick Details To See Console Log" 
+
 
 
 
