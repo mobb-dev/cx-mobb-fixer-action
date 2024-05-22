@@ -14,7 +14,7 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 **Required** your Checkmarx API token
 
-## `api-key`
+## `mobb-api-token`
 
 **Required** The Mobb API key to use with the action.
 
@@ -61,6 +61,6 @@ jobs:
         uses: mobb-dev/cx-mobb-fixer-action@v2
         with:
           cx-api-token: ${{ secrets.CX_API_TOKEN  }}
-          api-key: ${{ secrets.MOBB_API_TOKEN }}
+          mobb-api-token: ${{ secrets.MOBB_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
