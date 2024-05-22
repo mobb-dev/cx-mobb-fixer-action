@@ -65,6 +65,10 @@ runs:
         SCANNER=checkmarx
         PR_NUMBER=${{ github.event.issue.number }}
         GITHUB_HEAD_REF=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
+        echo REPO: $REPO
+        echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
+        echo GITHUB_SHA: $GITHUB_SHA
+        echo PR_NUMBER: $PR_NUMBER
         OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.mobb-api-token }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER)
         RETVAL=$?
         if [ $RETVAL -ne 0 ]; then
