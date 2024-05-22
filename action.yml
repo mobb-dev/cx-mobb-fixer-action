@@ -60,7 +60,6 @@ runs:
       run: |
         REPO=$(git remote get-url origin)
         REPO=${REPO%".git"}
-        echo $REPO
         SCANNER=checkmarx
         PR_NUMBER=${{ github.event.issue.number }}
         GITHUB_HEAD_REF=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
