@@ -51,6 +51,7 @@ jobs:
     permissions:
       pull-requests: write
       statuses: write
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -58,9 +59,10 @@ jobs:
 
       - name: Run Mobb GH Fixer monitor for CxOne Comments
         if: always()
-        uses: mobb-dev/cx-mobb-fixer-action@v1.1
+        uses: mobb-dev/cx-mobb-fixer-action@v1.2
         with:
           cx-api-token: ${{ secrets.CX_API_TOKEN  }}
           mobb-api-token: ${{ secrets.MOBB_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
 ```
