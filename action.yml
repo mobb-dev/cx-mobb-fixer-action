@@ -67,7 +67,7 @@ runs:
         REPO=${REPO%".git"}
         SCANNER=checkmarx
         PR_NUMBER=${{ github.event.issue.number }}
-        GITHUB_HEAD_REF=$(curl -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
+        GITHUB_HEAD_REF=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
         echo REPO: $REPO
         echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
         echo GITHUB_SHA: $GITHUB_SHA
