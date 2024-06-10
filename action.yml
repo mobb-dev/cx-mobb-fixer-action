@@ -29,7 +29,7 @@ runs:
       name: Set Up Environment
       run: |
         
-        OUT=$(curl --header 'authorization: Bearer ${{ inputs.github-token }} -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
+        OUT=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.sha')
         echo $OUT
         echo "head-sha=$OUT" >> $GITHUB_OUTPUT
         RUN_PATH=$GITHUB_SERVER_URL"/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID
