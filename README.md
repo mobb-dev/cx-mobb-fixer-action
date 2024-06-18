@@ -22,6 +22,11 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 **Required** The GitHub api token to use with the action. Usually available as `${{ secrets.GITHUB_TOKEN }}`.
 
+## `cx-timeout`
+
+**Optional** Checkmarx CLI - Timeout for network activity (in seconds). Default: 5`.
+
+
 ## Example usage
 
 Create a file under the path `.github/workflow/mobb.yml`. 
