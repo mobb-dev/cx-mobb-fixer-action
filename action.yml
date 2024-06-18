@@ -65,7 +65,7 @@ runs:
     - name: Get Checkmarx Report
       run: |
         #SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p; q')
-        SCAN_ID=$(sed -n '0,/scans?id=/ s/.*scans?id=\([^&]*\).*/\1/p' comment_file.txt)
+        SCAN_ID=$(sed --debug -n '0,/scans?id=/ s/.*scans?id=\([^&]*\).*/\1/p' comment_file.txt)
         echo "Scan_ID: $SCAN_ID"
         wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.4/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
