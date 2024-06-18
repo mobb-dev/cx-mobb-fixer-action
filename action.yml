@@ -13,6 +13,10 @@ inputs:
   github-token:
     description: "GitHub token"
     required: true
+  cx-timeout:
+    description: "Checkmarx CLI timeout"
+    required: false
+    default: '5'
 outputs:
   fix-report-url:
     description: "Mobb fix report URL"
@@ -52,10 +56,10 @@ runs:
     - name: Get Checkmarx Report
       run: |
         SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p')
-        wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.2/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
+        wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.4/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
         ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
-        ./cx results show --output-name report --report-format json --scan-id $SCAN_ID
+        ./cx results show --output-name report --report-format json --scan-id $SCAN_ID --timeout ${{ inputs.cx-timeout }} --debug 
       env:
         COMMENT: ${{ github.event.comment.body }}
       shell: bash -l {0}
