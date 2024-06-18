@@ -24,7 +24,7 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 ## `cx-timeout`
 
-**Optional** Checkmarx CLI - Timeout for network activity (in seconds). Default: 5`.
+**Optional** Checkmarx CLI - Timeout for network activity (in seconds). Default: 5 [See Checkmarx Documentations for more details](https://docs.checkmarx.com/en/34965-68626-global-flags.html#UUID-4a3bf436-5bce-714c-5886-e0edf6e1b1bd_N64922ce119eee).
 
 
 ## Example usage
