@@ -59,7 +59,7 @@ runs:
         wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.4/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
         ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
-        ./cx results show --output-name report --report-format json --scan-id $SCAN_ID --timeout ${{ inputs.cx-timeout }}
+        ./cx results show --output-name report --report-format json --scan-id $SCAN_ID --timeout ${{ inputs.cx-timeout }} --debug 
       env:
         COMMENT: ${{ github.event.comment.body }}
       shell: bash -l {0}
