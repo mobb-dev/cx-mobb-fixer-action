@@ -55,7 +55,7 @@ runs:
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get Checkmarx Report
       run: |
-        SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p')
+        SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p; q')
         echo "Scan_ID: $SCAN_ID"
         wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.4/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
         tar -xf checkmarx.tar.gz
