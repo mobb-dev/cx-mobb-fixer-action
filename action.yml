@@ -86,27 +86,27 @@ runs:
     #   shell: bash -l {0}
 
             
-    # - id: run-npx-mobb-dev
-    #   name: Mobb - Generate Autofix
-    #   run: |
-    #     REPO=$(git remote get-url origin)
-    #     REPO=${REPO%".git"}
-    #     SCANNER=checkmarx
-    #     PR_NUMBER=${{ github.event.issue.number }}
-    #     GITHUB_HEAD_REF=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
-    #     echo REPO: $REPO
-    #     echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
-    #     echo GITHUB_SHA: $GITHUB_SHA
-    #     echo PR_NUMBER: $PR_NUMBER
-    #     OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.mobb-api-token }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER -p .)
-    #     RETVAL=$?
-    #     if [ $RETVAL -ne 0 ]; then
-    #       exit $RETVAL
-    #     fi
-    #     OUT=$(echo $OUT | tr '\n' ' ')
-    #     echo "fix-report-url=$OUT" >> $GITHUB_OUTPUT
-    #     echo "Mobb URL: $OUT"
-    #   shell: bash -l {0}
+    - id: run-npx-mobb-dev
+      name: Mobb - Generate Autofix
+      run: |
+        REPO=$(git remote get-url origin)
+        REPO=${REPO%".git"}
+        SCANNER=checkmarx
+        PR_NUMBER=${{ github.event.issue.number }}
+        GITHUB_HEAD_REF=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
+        echo REPO: $REPO
+        echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
+        echo GITHUB_SHA: $GITHUB_SHA
+        echo PR_NUMBER: $PR_NUMBER
+        OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.mobb-api-token }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER -p .)
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+          exit $RETVAL
+        fi
+        OUT=$(echo $OUT | tr '\n' ' ')
+        echo "fix-report-url=$OUT" >> $GITHUB_OUTPUT
+        echo "Mobb URL: $OUT"
+      shell: bash -l {0}
 
     # - name: Run Mobb on the findings and get fixes
     #   if: always()
