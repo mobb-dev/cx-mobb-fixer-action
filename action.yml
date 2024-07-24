@@ -64,28 +64,49 @@ runs:
       env:
         COMMENT: ${{ github.event.comment.body }}
       shell: bash -l {0}
+      
+    - uses: actions/upload-artifact@v4
+      id: vul-report-upload
+      with:
+        name: vul-report
+        path: report.json
+        run: echo "Artifact ID is ${{ steps.vul-report-upload.outputs.artifact-id }}"
+        shell: bash -l {0} 
+      
+    - id: download-vul-report
+      run: |
+        echo "url is: https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/${{ steps.vul-report-upload.outputs.artifact-id }}/zip" 
+        curl -L \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ inputs.github-token }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          -o vul_report.zip \
+          https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/${{ steps.vul-report-upload.outputs.artifact-id }}/zip
+        unzip -d results vul_report.zip
+      shell: bash -l {0}
 
-    # - id: run-npx-mobb-dev
-    #   name: Mobb - Generate Autofix
-    #   run: |
-    #     REPO=$(git remote get-url origin)
-    #     REPO=${REPO%".git"}
-    #     SCANNER=checkmarx
-    #     PR_NUMBER=${{ github.event.issue.number }}
-    #     GITHUB_HEAD_REF=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
-    #     echo REPO: $REPO
-    #     echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
-    #     echo GITHUB_SHA: $GITHUB_SHA
-    #     echo PR_NUMBER: $PR_NUMBER
-    #     OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.mobb-api-token }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER)
-    #     RETVAL=$?
-    #     if [ $RETVAL -ne 0 ]; then
-    #       exit $RETVAL
-    #     fi
-    #     OUT=$(echo $OUT | tr '\n' ' ')
-    #     echo "fix-report-url=$OUT" >> $GITHUB_OUTPUT
-    #     echo "Mobb URL: $OUT"
-    #   shell: bash -l {0}
+            
+    - id: run-npx-mobb-dev
+      name: Mobb - Generate Autofix
+      run: |
+        REPO=$(git remote get-url origin)
+        REPO=${REPO%".git"}
+        SCANNER=checkmarx
+        PR_NUMBER=${{ github.event.issue.number }}
+        GITHUB_HEAD_REF=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
+        echo REPO: $REPO
+        echo GITHUB_HEAD_REF: $GITHUB_HEAD_REF
+        echo GITHUB_SHA: $GITHUB_SHA
+        echo PR_NUMBER: $PR_NUMBER
+        OUT=$(npx --yes mobbdev@latest review  -r $REPO --ref $GITHUB_HEAD_REF --ch $GITHUB_SHA --api-key ${{ inputs.mobb-api-token }} -f report.json  --pr $PR_NUMBER --github-token ${{ inputs.github-token }} --scanner $SCANNER -p .)
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+          exit $RETVAL
+        fi
+        OUT=$(echo $OUT | tr '\n' ' ')
+        echo "fix-report-url=$OUT" >> $GITHUB_OUTPUT
+        echo "Mobb URL: $OUT"
+      shell: bash -l {0}
 
     - name: Run Mobb on the findings and get fixes
       if: always()
@@ -96,15 +117,15 @@ runs:
         github-token: ${{ inputs.github-token }}
         scanner: checkmarx
 
-    # Publish the Mobb fix report link in the PR
-    # - uses: guibranco/github-status-action-v2@v1.1.13
-    #   with:
-    #     authToken: ${{ inputs.github-token }}
-    #     context: "Mobb Fix Report Link"
-    #     state: "success"
-    #     target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
-    #     sha: ${{steps.env.outputs.head-sha}}
-    #     description: "Click \"Details\" to access the full fix analysis report" 
+    Publish the Mobb fix report link in the PR
+    - uses: guibranco/github-status-action-v2@v1.1.13
+      with:
+        authToken: ${{ inputs.github-token }}
+        context: "Mobb Fix Report Link"
+        state: "success"
+        target_url: ${{ steps.run-npx-mobb-dev.outputs.fix-report-url }}
+        sha: ${{steps.env.outputs.head-sha}}
+        description: "Click \"Details\" to access the full fix analysis report" 
 
 
     # Displays status in the PR that this action is in 'complete' status
