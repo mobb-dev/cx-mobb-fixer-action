@@ -39,7 +39,16 @@ runs:
         RUN_PATH=$GITHUB_SERVER_URL"/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID
         echo RUN_PATH: $RUN_PATH
         echo "action-run-path=$RUN_PATH" >> $GITHUB_OUTPUT
+
+        #Getting the head-ref
+        GITHUB_HEAD_REF=$(curl --header 'authorization: Bearer ${{ inputs.github-token }}' -s ${{github.event.issue.pull_request.url }} | jq -r '.head.ref')
+        echo "github-head-ref=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
       shell: bash -l {0}
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ steps.env.outputs.github-head-ref }}
 
 
     # Displays status in the PR that this action is in 'pending' status
