@@ -100,15 +100,6 @@ runs:
         echo "Mobb URL: $OUT"
       shell: bash -l {0}
 
-    # - name: Run Mobb on the findings and get fixes
-    #   if: always()
-    #   uses: mobb-dev/action/review@v1.1
-    #   with:
-    #     report-file: report.json
-    #     api-key: ${{ inputs.mobb-api-token }}
-    #     github-token: ${{ inputs.github-token }}
-    #     scanner: checkmarx
-
     # Publish the Mobb fix report link in the PR
     - uses: guibranco/github-status-action-v2@v1.1.13
       with:
